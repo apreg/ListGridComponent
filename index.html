@@ -1,1 +1,125 @@
-"My Page" 
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Hello React</title>
+    <script src="http://fb.me/react-0.12.2.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/default.css"/>
+    <link rel="stylesheet" type="text/css" href="css/component.css"/>
+    <script src="js/vendor/classie.js"></script>
+
+</head>
+<body>
+<div id="content">
+    <script type="text/jsx">
+        var ListGridComponent = React.createClass({
+            getInitialState: function () {
+                return {viewMode: 'cbp-vm-view-grid'};
+            },
+            handleSwitch: function (viewMode) {
+                this.setState({viewMode: viewMode});
+            },
+            render: function () {
+                var items = this.props.items.map(function (item) {
+                    return (
+                            <Item img={item.img} name={item.name} price={item.price} details={item.details}/>
+                    );
+                });
+                var classString = "cbp-vm-switcher " + this.state.viewMode;
+                return (
+                        <div className="main">
+                            <div id="cbp-vm" className={classString}>
+                                <ViewSwitcher initialView={this.state.viewMode} onSwitch={this.handleSwitch}/>
+                                <ul>
+                                {items}
+                                </ul>
+                            </div>
+                        </div>
+                );
+            }
+        });
+
+        var ViewSwitcher = React.createClass({
+            getRadios: function () {
+                return Array.prototype.slice.call(this.getDOMNode().querySelectorAll('div.cbp-vm-options > a'), 0);//coz NodeList does not have forEach
+            },
+            handleClick: function (e) {
+                this.getRadios().forEach(function (el) {
+                    classie.remove(el, 'cbp-vm-selected');
+                });
+                classie.add(e.target, 'cbp-vm-selected');
+                this.props.onSwitch(e.target.getAttribute('data-view'));
+            },
+            componentDidMount: function () {
+                var self = this;
+                this.getRadios().forEach(function (el) {
+                    if (el.getAttribute('data-view') === self.props.initialView)
+                        classie.add(el, 'cbp-vm-selected');
+                });
+            },
+            render: function () {
+                return (
+                        <div className="cbp-vm-options">
+                            <a href="#" className="cbp-vm-icon cbp-vm-grid" onClick={this.handleClick} data-view="cbp-vm-view-grid">Grid View</a>
+                            <a href="#" className="cbp-vm-icon cbp-vm-list" onClick={this.handleClick} data-view="cbp-vm-view-list">List View</a>
+                        </div>
+                );
+            }
+        });
+
+        var Item = React.createClass({
+            render: function () {
+                return (
+                        <li>
+                            <a className="cbp-vm-image" href="#">
+                                <img src={this.props.img}></img>
+                            </a>
+                            <h3 className="cbp-vm-title">{this.props.name}</h3>
+                            <div className="cbp-vm-price">{this.props.price}</div>
+                            <div className="cbp-vm-details">
+                                {this.props.details}
+                            </div>
+                            <a className="cbp-vm-icon cbp-vm-add" href="#">Add to cart</a>
+                        </li>
+                );
+            }
+
+        });
+
+        var items = [
+            {
+                img: "images/1.png",
+                name: "Silver beet",
+                price: "$19.99",
+                details: "Silver beet shallot wakame tomatillo salsify mung bean beetroot groundnut."
+            },
+            {
+                img: "images/2.png",
+                name: "Wattle seed",
+                price: "$22.99",
+                details: "Wattle seed bunya nuts spring onion okra garlic bitterleaf zucchini."
+            },
+            {
+                img: "images/3.png",
+                name: "Kohlrabi bok",
+                price: "$5.99",
+                details: "Kohlrabi bok choy broccoli rabe welsh onion spring onion tatsoi ricebean kombu chard."
+            },
+            {
+                img: "images/4.png",
+                name: "Melon sierra",
+                price: "$3.99",
+                details: "Melon sierra leone bologi carrot peanut salsify celery onion jícama summer purslane."
+            },
+        ];
+        React.render(
+                <ListGridComponent items={items}/>
+                ,
+                document.getElementById('content')
+        );
+    </script>
+</div>
+</body>
+</html>
