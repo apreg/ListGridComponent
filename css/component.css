@@ -22,6 +22,11 @@
 	border-bottom: 3px solid #47a3da;
 }
 
+.cbp-vm-options.cbp-vm-view-grid .cbp-vm-grid,
+.cbp-vm-options.cbp-vm-view-list .cbp-vm-list {
+	color: #47a3da;
+}
+
 .cbp-vm-options a {
 	display: inline-block;
 	width: 40px;
@@ -32,8 +37,7 @@
 	margin: 2px;
 }
 
-.cbp-vm-options a:hover,
-.cbp-vm-options a.cbp-vm-selected {
+.cbp-vm-options a:hover {
 	color: #47a3da;
 }
 

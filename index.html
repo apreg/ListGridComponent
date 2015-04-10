@@ -5,10 +5,8 @@
     <title>Hello React</title>
     <script src="http://fb.me/react-0.12.2.js"></script>
     <script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
-    <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/default.css"/>
     <link rel="stylesheet" type="text/css" href="css/component.css"/>
-    <script src="js/vendor/classie.js"></script>
 
 </head>
 <body>
@@ -42,26 +40,13 @@
         });
 
         var ViewSwitcher = React.createClass({
-            getRadios: function () {
-                return Array.prototype.slice.call(this.getDOMNode().querySelectorAll('div.cbp-vm-options > a'), 0);//coz NodeList does not have forEach
-            },
             handleClick: function (e) {
-                this.getRadios().forEach(function (el) {
-                    classie.remove(el, 'cbp-vm-selected');
-                });
-                classie.add(e.target, 'cbp-vm-selected');
                 this.props.onSwitch(e.target.getAttribute('data-view'));
             },
-            componentDidMount: function () {
-                var self = this;
-                this.getRadios().forEach(function (el) {
-                    if (el.getAttribute('data-view') === self.props.initialView)
-                        classie.add(el, 'cbp-vm-selected');
-                });
-            },
             render: function () {
+                var c = "cbp-vm-options " + this.props.initialView;
                 return (
-                        <div className="cbp-vm-options">
+                        <div className={c}>
                             <a href="#" className="cbp-vm-icon cbp-vm-grid" onClick={this.handleClick} data-view="cbp-vm-view-grid">Grid View</a>
                             <a href="#" className="cbp-vm-icon cbp-vm-list" onClick={this.handleClick} data-view="cbp-vm-view-list">List View</a>
                         </div>
